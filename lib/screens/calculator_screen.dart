@@ -9,6 +9,9 @@ class CalculatorScreen extends StatefulWidget {
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
   final TextEditingController _controller = TextEditingController();
+  double first = 0;
+  double second = 0;
+  String operator = "";
 
   final List<String> characters = [
     "C",
@@ -62,7 +65,23 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             _controller.text.length - 1,
           );
         }
+      } else if (char == "+" ||
+          char == "-" ||
+          char == "*" ||
+          char == "/" ||
+          char == "%") {
+        first = double.parse(_controller.text);
+        operator = char;
+        _controller.text = "";
       } else if (char == "=") {
+        second = double.parse(_controller.text);
+        double result = 0;
+        switch (operator) {
+          case "+":
+            result = first + second;
+            break;
+        }
+        _controller.text = result.toString();
         // Evaluation haru ya gara i.e + , - , *, / k ma press garecha
       } else {
         _controller.text += char;
@@ -165,7 +184,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                                 borderRadius: BorderRadius.circular(16),
                               ),
                             ),
-                            onPressed: () => _onButtonPressed(char),
+                            onPressed: () {
+                              // Button press handling
+                              _onButtonPressed(char);
+                            },
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
